@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './Home';
+import Home from './home';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import './App.css';
