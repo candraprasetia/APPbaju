@@ -7,11 +7,11 @@ export default function AdminDashboard() {
   const [form, setForm] = useState({ name: '', price: '' });
   const [image, setImage] = useState(null);
   
-  // State untuk menandakan apakah sedang dalam mode edit atau tambah baru
   const [editingId, setEditingId] = useState(null);
 
   const fetchProducts = () => {
-    axios.get('http://127.0.0.1:8000/api/products')
+    // 1. UPDATE GET DATA
+    axios.get('https://rc-thrift-backend-production.up.railway.app/api/products')
       .then(res => setProducts(res.data))
       .catch(err => console.error("Gagal mengambil data:", err));
   };
@@ -31,37 +31,34 @@ export default function AdminDashboard() {
     }
 
     if (editingId) {
-      // PROSES UPDATE
-      axios.post(`http://127.0.0.1:8000/api/products/${editingId}`, formData, {
+      // 2. UPDATE POST (EDIT)
+      axios.post(`https://rc-thrift-backend-production.up.railway.app/api/products/${editingId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(() => {
         handleCancelEdit();
         fetchProducts();
       });
     } else {
-      // PROSES TAMBAH BARU
-      axios.post('http://127.0.0.1:8000/api/products', formData, {
+      // 3. UPDATE POST (TAMBAH BARU)
+      axios.post('https://rc-thrift-backend-production.up.railway.app/api/products', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       }).then(() => {
         setForm({ name: '', price: '' });
         setImage(null);
-        // Reset file input secara manual
         document.getElementById('fileInput').value = "";
         fetchProducts();
       });
     }
   };
 
-  // Fungsi untuk mengisi form dengan data barang yang mau diedit
   const handleEdit = (product) => {
     setEditingId(product.id);
     setForm({ name: product.name, price: product.price });
     setImage(null); 
-    document.getElementById('fileInput').value = ""; // Kosongkan pilihan file
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Otomatis scroll ke atas
+    document.getElementById('fileInput').value = "";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Fungsi membatalkan mode edit
   const handleCancelEdit = () => {
     setEditingId(null);
     setForm({ name: '', price: '' });
@@ -71,7 +68,8 @@ export default function AdminDashboard() {
 
   const handleDelete = (id) => {
     if (window.confirm("Yakin ingin menghapus produk ini?")) {
-      axios.delete(`http://127.0.0.1:8000/api/products/${id}`).then(() => fetchProducts());
+      // 4. UPDATE DELETE
+      axios.delete(`https://rc-thrift-backend-production.up.railway.app/api/products/${id}`).then(() => fetchProducts());
     }
   };
 
@@ -120,11 +118,11 @@ export default function AdminDashboard() {
             <tbody>
               {products.map(p => (
                 <tr key={p.id}>
-                  {/* Kolom Penampil Gambar */}
                   <td>
                     {p.image ? (
+                      /* 5. UPDATE TAMPILAN GAMBAR */
                       <img 
-                        src={`http://127.0.0.1:8000/storage/${p.image}`} 
+                        src={`https://rc-thrift-backend-production.up.railway.app/storage/${p.image}`} 
                         alt={p.name} 
                         style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} 
                       />

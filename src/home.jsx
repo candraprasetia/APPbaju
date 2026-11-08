@@ -8,7 +8,8 @@ export default function Home() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/products')
+    // 1. UPDATE GET DATA API
+    axios.get('https://rc-thrift-backend-production.up.railway.app/api/products')
       .then(res => setProducts(res.data))
       .catch(err => console.error("Error fetching data:", err));
   }, []);
@@ -62,11 +63,11 @@ export default function Home() {
                 onClick={() => handleBeliWhatsApp(product.name)}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -8, scale: 1.02 }}
               >
-                {/* Bagian ini memanggil foto dari storage Laravel */}
+                {/* 2. UPDATE LINK GAMBAR STORAGE */}
                 <div 
                   className="card-img-placeholder"
                   style={{
-                    backgroundImage: product.image ? `url(http://127.0.0.1:8000/storage/${product.image})` : 'none',
+                    backgroundImage: product.image ? `url(https://rc-thrift-backend-production.up.railway.app/storage/${product.image})` : 'none',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                   }}
