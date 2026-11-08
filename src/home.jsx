@@ -10,7 +10,6 @@ export default function Home() {
   useEffect(() => {
     axios.get('https://rc-thrift-backend-production.up.railway.app/api/products')
       .then(res => {
-        // Membalik urutan array agar barang paling baru (terakhir diinput) muncul di atas
         setProducts(res.data.reverse());
       })
       .catch(err => console.error("Error fetching data:", err));
@@ -57,14 +56,14 @@ export default function Home() {
       </header>
 
       <main className="mp-container">
-        {/* Banner Tanpa Teks */}
-        <section className="mp-banner">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="banner-content"></motion.div>
+        {/* BANNER DIPERBESAR TINGGINYA JADI 400px (atau lebih sesuai selera) */}
+        <section className="mp-banner" style={{ minHeight: '400px', display: 'flex' }}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="banner-content" style={{ width: '100%', height: '100%' }}></motion.div>
         </section>
 
-        <section className="mp-categories">
+        {/* JARAK BAWAH KATEGORI DIPERKECIL */}
+        <section className="mp-categories" style={{ marginBottom: '10px' }}>
           <div className="category-grid">
-            {/* Link akan memindahkan user ke halaman /kategori/cowok */}
             <Link to="/kategori/cowok" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="category-card" style={{ cursor: 'pointer' }}>
                 <div className="cat-icon-wrapper cowok"><Shirt size={24} /></div>
@@ -72,7 +71,6 @@ export default function Home() {
               </div>
             </Link>
             
-            {/* Link akan memindahkan user ke halaman /kategori/cewek */}
             <Link to="/kategori/cewek" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="category-card" style={{ cursor: 'pointer' }}>
                 <div className="cat-icon-wrapper cewek"><Sparkles size={24} /></div>
@@ -82,9 +80,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Semua Produk Campur (Terbaru di atas) */}
-        <section className="mp-products" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
-          <div className="section-header"><h3>LATEST DROPS (Semua Produk)</h3></div>
+        {/* JARAK ATAS PRODUK DIRAPATKAN (paddingTop jadi 10px) */}
+        <section className="mp-products" style={{ paddingTop: '10px', paddingBottom: '60px' }}>
+          <div className="section-header"><h3>LATEST DROPS</h3></div>
           <div className="product-grid">
             {products.length === 0 ? (
               <p style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: '20px' }}>Belum ada produk jualan.</p>
