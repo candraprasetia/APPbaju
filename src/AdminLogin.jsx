@@ -10,7 +10,7 @@ export default function AdminLogin() {
   const handleLogin = (e) => {
     e.preventDefault();
     // Ganti email dan password ini sesuai keinginan kalian
-    if (email === 'admin@.com' && password === 'admin00') {
+    if (email === 'admin@gmail.com' && password === 'admin00') {
       navigate('/admin/dashboard');
     } else {
       alert('Akses Ditolak! Email atau Password salah.');
