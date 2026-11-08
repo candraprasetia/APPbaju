@@ -57,7 +57,18 @@ export default function Home() {
 
       <main className="mp-container">
         {/* BANNER DIPERBESAR TINGGINYA JADI 400px (atau lebih sesuai selera) */}
-        <section className="mp-banner" style={{ minHeight: '400px', display: 'flex' }}>
+        <section 
+          className="mp-banner" 
+          style={{ 
+            width: '100%',
+            aspectRatio: '1920 / 600',
+            display: 'flex',
+            backgroundImage: 'url("MASUKKAN_LINK_URL_GAMBAR_BANNER_KAMU_DISINI")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="banner-content" style={{ width: '100%', height: '100%' }}></motion.div>
         </section>
 
