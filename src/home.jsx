@@ -16,13 +16,12 @@ export default function Home() {
   }, []);
 
   const handleBeliWhatsApp = (namaBarang) => {
-    const noWA = "6281234567890"; // Ganti pakai nomer kamu/Rika
+    const noWA = "6281297439419";
     const pesan = `Halo Kak, saya tertarik mau beli ${namaBarang}. Apakah barangnya masih ready?`;
     window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`, '_blank');
   };
 
-  // KARTU PRODUK YANG SUDAH DIPERBAIKI (TIDAK PANJANG LAGI)
-  const ProductCard = ({ product, index }) => (
+const ProductCard = ({ product, index }) => (
     <motion.div 
       className="mp-card" 
       initial={{ opacity: 0, y: 20 }} 
@@ -32,28 +31,47 @@ export default function Home() {
       whileHover={{ y: -8, scale: 1.02 }} 
       style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#fff', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}
     >
+      {/* 1. GAMBAR DIBUAT KOTAK SEMPURNA (ANTI PANJANG) */}
       <div 
         className="card-img-placeholder" 
         style={{ 
           backgroundImage: product.image ? `url(https://rc-thrift-backend-production.up.railway.app/storage/${product.image})` : 'none', 
           backgroundSize: 'cover', 
           backgroundPosition: 'center', 
-          width: '100%',
-          aspectRatio: '1 / 1', // INI KUNCI AGAR FOTO KOTAK SEMPURNA
+          width: '100%', 
+          aspectRatio: '1 / 1', // Ini yang membuat gambar selalu proporsional
           backgroundColor: '#f3f4f6'
         }}>
       </div>
-      <div className="card-body" style={{ display: 'flex', flexDirection: 'column', padding: '12px', gap: '8px' }}>
-        <h4 className="product-name" style={{ margin: 0, fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#18181b' }}>
-          {product.name}
-        </h4>
-        <div className="product-price" style={{ fontWeight: 'bold', fontSize: '14px', color: '#18181b' }}>
-          Rp {Number(product.price).toLocaleString('id-ID')}
+      
+      {/* 2. PADDING DIKECILKAN AGAR LEBIH RINGKAS */}
+      <div className="card-body" style={{ display: 'flex', flexDirection: 'column', padding: '12px', gap: '10px' }}>
+        
+        {/* 3. NAMA KIRI, HARGA KANAN DALAM SATU BARIS */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+          <h4 className="product-name" style={{ 
+            margin: 0, 
+            fontSize: '13px', 
+            lineHeight: '1.3', 
+            color: '#18181b', 
+            flex: 1, 
+            textAlign: 'left',
+            // Jika nama kepanjangan, akan dipotong jadi 2 baris (titik-titik)
+            display: '-webkit-box', 
+            WebkitLineClamp: 2, 
+            WebkitBoxOrient: 'vertical', 
+            overflow: 'hidden' 
+          }}>
+            {product.name}
+          </h4>
+          
+          <div className="product-price" style={{ fontWeight: 'bold', fontSize: '13px', color: '#18181b', whiteSpace: 'nowrap' }}>
+            Rp {Number(product.price).toLocaleString('id-ID')}
+          </div>
         </div>
-        <button 
-          onClick={() => handleBeliWhatsApp(product.name)} 
-          style={{ background: '#25D366', color: 'white', padding: '8px', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', fontWeight: 'bold', fontSize: '12px' }}
-        >
+        
+        {/* 4. TOMBOL PESAN LEBIH PADAT */}
+        <button onClick={() => handleBeliWhatsApp(product.name)} style={{ background: '#25D366', color: 'white', padding: '8px', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', fontWeight: 'bold', fontSize: '12px', width: '100%' }}>
           <MessageCircle size={14} /> Pesan
         </button>
       </div>
@@ -77,14 +95,14 @@ export default function Home() {
       </header>
 
       <main className="mp-container">
-        {/* BANNER 1920x600 TERKUNCI (Ganti URL-nya dengan gambar kamu) */}
+        {/* BANNER DIPERBESAR TINGGINYA JADI 400px (atau lebih sesuai selera) */}
         <section 
           className="mp-banner" 
           style={{ 
             width: '100%',
             aspectRatio: '1920 / 600',
             display: 'flex',
-            backgroundImage: 'url("/banner.jpg")', // Sesuaikan path ini
+            backgroundImage: 'url("/banner.png")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
@@ -93,7 +111,9 @@ export default function Home() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="banner-content" style={{ width: '100%', height: '100%' }}></motion.div>
         </section>
 
-        <section className="mp-categories" style={{ marginBottom: '10px' }}>
+
+        {/* JARAK BAWAH KATEGORI DIPERKECIL */}
+        <section className="mp-categories" style={{ marginBottom: '9px' }}>
           <div className="category-grid">
             <Link to="/kategori/cowok" style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="category-card" style={{ cursor: 'pointer' }}>
@@ -111,10 +131,9 @@ export default function Home() {
           </div>
         </section>
 
+        {/* JARAK ATAS PRODUK DIRAPATKAN (paddingTop jadi 10px) */}
         <section className="mp-products" style={{ paddingTop: '10px', paddingBottom: '60px' }}>
           <div className="section-header"><h3>LATEST DROPS</h3></div>
-          
-          {/* GRID PRODUK */}
           <div className="product-grid">
             {products.length === 0 ? (
               <p style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: '20px' }}>Belum ada produk jualan.</p>
