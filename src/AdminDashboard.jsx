@@ -8,8 +8,6 @@ export default function AdminDashboard() {
   const [form, setForm] = useState({ name: '', price: '', category: 'cowok' });
   const [image, setImage] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  
-  // STATE UNTUK MUNCULIN POP-UP SUCCESS
   const [successMsg, setSuccessMsg] = useState('');
 
   const fetchProducts = () => {
@@ -87,28 +85,43 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="dashboard-container" style={{ position: 'relative' }}>
+    <div style={{ 
+      position: 'relative', 
+      minHeight: '100vh', 
+      width: '100%', 
+      backgroundColor: '#f4f4f5', // Pastikan warna background mencakup seluruh halaman
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
+      boxSizing: 'border-box',
+      padding: '12px' 
+    }}>
       
       <AnimatePresence>
         {successMsg && (
           <motion.div 
             initial={{ opacity: 0, y: -50 }} 
-            animate={{ opacity: 1, y: 20 }} 
+            animate={{ opacity: 1, y: 10 }} 
             exit={{ opacity: 0, y: -50 }}
             style={{
               position: 'fixed',
-              top: '20px',
-              right: '20px',
+              top: '15px',
+              right: '15px',
+              left: '15px',
+              maxWidth: '400px',
+              margin: '0 auto',
               backgroundColor: '#10b981',
               color: 'white',
-              padding: '16px 24px',
+              padding: '14px 20px',
               borderRadius: '8px',
               boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
               zIndex: 9999,
               fontWeight: 'bold',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px'
+              justifyContent: 'center',
+              gap: '10px',
+              textAlign: 'center'
             }}
           >
             <span>✅</span> {successMsg}
@@ -116,81 +129,134 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
-      <header className="dash-header">
-        <h2>Dashboard Admin Thrift</h2>
-        <Link to="/" className="btn-logout">Lihat Toko</Link>
+      <header style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '10px',
+        marginBottom: '20px',
+        padding: '10px 0'
+      }}>
+        <h2 style={{ fontSize: 'clamp(1.2rem, 4vw, 1.8rem)', margin: 0 }}>Dashboard Admin</h2>
+        <Link to="/" className="btn-logout" style={{ padding: '8px 14px', fontSize: '14px', textDecoration: 'none' }}>Lihat Toko</Link>
       </header>
 
-      <main className="dash-main">
-        <div className="dash-form-card">
-          <h3>{editingId ? "Edit Produk" : "Tambah Produk Baru"}</h3>
-          <form onSubmit={handleSubmit} className="crud-form">
-            <input type="text" placeholder="Nama Baju (misal: Vintage Crewneck)" value={form.name} onChange={e => setForm({...form, name: e.target.value})} required />
-            <input type="number" placeholder="Harga (misal: 85000)" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required />
+      <main style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        width: '100%',
+        maxWidth: '1200px',
+        margin: '0 auto'
+      }}>
+        {/* Form Card */}
+        <div style={{
+          backgroundColor: '#ffffff',
+          padding: '20px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+          width: '100%',
+          boxSizing: 'border-box'
+        }}>
+          <h3 style={{ marginBottom: '15px', fontSize: '1.2rem' }}>{editingId ? "Edit Produk" : "Tambah Produk Baru"}</h3>
+          <form onSubmit={handleSubmit} className="crud-form" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <input 
+              type="text" 
+              placeholder="Nama Baju (misal: Vintage Crewneck)" 
+              value={form.name} 
+              onChange={e => setForm({...form, name: e.target.value})} 
+              required 
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e4e4e7', fontSize: '14px', boxSizing: 'border-box' }}
+            />
+            <input 
+              type="number" 
+              placeholder="Harga (misal: 85000)" 
+              value={form.price} 
+              onChange={e => setForm({...form, price: e.target.value})} 
+              required 
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e4e4e7', fontSize: '14px', boxSizing: 'border-box' }}
+            />
             
             <select 
               value={form.category} 
               onChange={e => setForm({...form, category: e.target.value})} 
               required 
-              style={{ display: 'block', width: '100%', padding: '12px', marginBottom: '15px', borderRadius: '8px', border: '1px solid #e4e4e7', backgroundColor: '#fafafa', fontSize: '14px', color: '#3f3f46', outline: 'none', cursor: 'pointer' }}
+              style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e4e4e7', backgroundColor: '#fafafa', fontSize: '14px', color: '#3f3f46', outline: 'none', cursor: 'pointer', boxSizing: 'border-box' }}
             >
               <option value="cowok">Koleksi Cowok</option>
               <option value="cewek">Koleksi Cewek</option>
             </select>
             
-            <label style={{display: 'block', marginBottom: '5px', fontSize: '13px', color: '#71717a'}}>
+            <label style={{ display: 'block', fontSize: '13px', color: '#71717a' }}>
               {editingId ? "Upload foto baru (Opsional)" : "Upload foto barang"}
             </label>
-            <input type="file" id="fileInput" accept="image/*" onChange={e => setImage(e.target.files[0])} required={!editingId} style={{ marginBottom: '15px' }} />
+            <input 
+              type="file" 
+              id="fileInput" 
+              accept="image/*" 
+              onChange={e => setImage(e.target.files[0])} 
+              required={!editingId} 
+              style={{ width: '100%', fontSize: '14px' }} 
+            />
 
-            <button type="submit" className="btn-save">
+            <button type="submit" className="btn-save" style={{ width: '100%', padding: '12px', borderRadius: '8px', cursor: 'pointer' }}>
               {editingId ? "Update Data" : "Simpan ke Database"}
             </button>
             
             {editingId && (
-              <button type="button" onClick={handleCancelEdit} className="btn-cancel" style={{marginTop: '10px'}}>
+              <button type="button" onClick={handleCancelEdit} className="btn-cancel" style={{ width: '100%', padding: '12px', borderRadius: '8px', cursor: 'pointer' }}>
                 Batal Edit
               </button>
             )}
           </form>
         </div>
 
-        <div className="dash-table-card">
-          <h3>Daftar Produk</h3>
+        {/* Table Card */}
+        <div style={{
+          backgroundColor: '#ffffff',
+          padding: '20px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+          width: '100%',
+          boxSizing: 'border-box',
+          overflow: 'hidden'
+        }}>
+          <h3 style={{ marginBottom: '15px', fontSize: '1.2rem' }}>Daftar Produk</h3>
           
-          {/* BUNGKUSAN RESPONSIVE UNTUK HP */}
-          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%', paddingBottom: '10px' }}>
-            <table className="crud-table" style={{ minWidth: '600px', width: '100%' }}>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }}>
+            <table className="crud-table" style={{ minWidth: '600px', width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr>
-                  <th>Gambar</th>
-                  <th>Nama Produk</th>
-                  <th>Kategori</th>
-                  <th>Harga</th>
-                  <th>Aksi</th>
+                <tr style={{ borderBottom: '2px solid #f4f4f5', textAlign: 'left' }}>
+                  <th style={{ padding: '10px' }}>Gambar</th>
+                  <th style={{ padding: '10px' }}>Nama Produk</th>
+                  <th style={{ padding: '10px' }}>Kategori</th>
+                  <th style={{ padding: '10px' }}>Harga</th>
+                  <th style={{ padding: '10px' }}>Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map(p => (
-                  <tr key={p.id}>
-                    <td>
+                  <tr key={p.id} style={{ borderBottom: '1px solid #f4f4f5' }}>
+                    <td style={{ padding: '10px' }}>
                       {p.image ? (
-                        <img src={`https://rc-thrift-backend-production.up.railway.app/storage/${p.image}`} alt={p.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} />
+                        <img src={`https://rc-thrift-backend-production.up.railway.app/storage/${p.image}`} alt={p.name} style={{ width: '45px', height: '45px', objectFit: 'cover', borderRadius: '6px' }} />
                       ) : (
-                        <span style={{color: '#a1a1aa', fontSize: '12px'}}>No Image</span>
+                        <span style={{ color: '#a1a1aa', fontSize: '12px' }}>No Image</span>
                       )}
                     </td>
-                    <td style={{ whiteSpace: 'nowrap' }}>{p.name}</td>
-                    <td>
-                      <span style={{ padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', backgroundColor: p.category === 'cewek' ? '#fce7f3' : '#e0f2fe', color: p.category === 'cewek' ? '#db2777' : '#0284c7' }}>
+                    <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{p.name}</td>
+                    <td style={{ padding: '10px' }}>
+                      <span style={{ padding: '4px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: 'bold', backgroundColor: p.category === 'cewek' ? '#fce7f3' : '#e0f2fe', color: p.category === 'cewek' ? '#db2777' : '#0284c7' }}>
                         {p.category === 'cewek' ? 'Cewek' : 'Cowok'}
                       </span>
                     </td>
-                    <td style={{ whiteSpace: 'nowrap', fontWeight: 'bold' }}>Rp {Number(p.price).toLocaleString('id-ID')}</td>
-                    <td>
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        <button onClick={() => handleEdit(p)} className="btn-edit">Edit</button>
-                        <button onClick={() => handleDelete(p.id)} className="btn-delete">Hapus</button>
+                    <td style={{ padding: '10px', whiteSpace: 'nowrap', fontWeight: 'bold' }}>Rp {Number(p.price).toLocaleString('id-ID')}</td>
+                    <td style={{ padding: '10px' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <button onClick={() => handleEdit(p)} className="btn-edit" style={{ padding: '6px 10px', fontSize: '12px', cursor: 'pointer' }}>Edit</button>
+                        <button onClick={() => handleDelete(p.id)} className="btn-delete" style={{ padding: '6px 10px', fontSize: '12px', cursor: 'pointer' }}>Hapus</button>
                       </div>
                     </td>
                   </tr>
