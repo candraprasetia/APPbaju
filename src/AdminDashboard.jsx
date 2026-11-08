@@ -22,7 +22,6 @@ export default function AdminDashboard() {
     fetchProducts();
   }, []);
 
-  // FUNGSI UNTUK MENAMPILKAN POP-UP SELAMA 3 DETIK
   const showSuccessPopup = (message) => {
     setSuccessMsg(message);
     setTimeout(() => {
@@ -48,7 +47,7 @@ export default function AdminDashboard() {
       }).then(() => {
         handleCancelEdit();
         fetchProducts();
-        showSuccessPopup("Mantap! Produk berhasil di-update!"); // POP-UP EDIT
+        showSuccessPopup("Mantap! Produk berhasil di-update!");
       });
     } else {
       axios.post('https://rc-thrift-backend-production.up.railway.app/api/products', formData, {
@@ -58,7 +57,7 @@ export default function AdminDashboard() {
         setImage(null);
         document.getElementById('fileInput').value = "";
         fetchProducts();
-        showSuccessPopup("Mantap! Produk baru berhasil ditambahkan!"); // POP-UP TAMBAH
+        showSuccessPopup("Mantap! Produk baru berhasil ditambahkan!");
       });
     }
   };
@@ -82,7 +81,7 @@ export default function AdminDashboard() {
     if (window.confirm("Yakin ingin menghapus produk ini?")) {
       axios.delete(`https://rc-thrift-backend-production.up.railway.app/api/products/${id}`).then(() => {
         fetchProducts();
-        showSuccessPopup("Produk berhasil dihapus!"); // POP-UP HAPUS
+        showSuccessPopup("Produk berhasil dihapus!");
       });
     }
   };
@@ -90,7 +89,6 @@ export default function AdminDashboard() {
   return (
     <div className="dashboard-container" style={{ position: 'relative' }}>
       
-      {/* KODE POP-UP MUNCUL DARI ATAS */}
       <AnimatePresence>
         {successMsg && (
           <motion.div 
@@ -101,7 +99,7 @@ export default function AdminDashboard() {
               position: 'fixed',
               top: '20px',
               right: '20px',
-              backgroundColor: '#10b981', // Warna hijau elegan
+              backgroundColor: '#10b981',
               color: 'white',
               padding: '16px 24px',
               borderRadius: '8px',
@@ -141,7 +139,7 @@ export default function AdminDashboard() {
             </select>
             
             <label style={{display: 'block', marginBottom: '5px', fontSize: '13px', color: '#71717a'}}>
-              {editingId ? "Upload foto baru (Opsional, biarkan kosong jika tidak ingin ganti foto)" : "Upload foto barang"}
+              {editingId ? "Upload foto baru (Opsional)" : "Upload foto barang"}
             </label>
             <input type="file" id="fileInput" accept="image/*" onChange={e => setImage(e.target.files[0])} required={!editingId} style={{ marginBottom: '15px' }} />
 
@@ -159,41 +157,47 @@ export default function AdminDashboard() {
 
         <div className="dash-table-card">
           <h3>Daftar Produk</h3>
-          <table className="crud-table">
-            <thead>
-              <tr>
-                <th>Gambar</th>
-                <th>Nama Produk</th>
-                <th>Kategori</th>
-                <th>Harga</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map(p => (
-                <tr key={p.id}>
-                  <td>
-                    {p.image ? (
-                      <img src={`https://rc-thrift-backend-production.up.railway.app/storage/${p.image}`} alt={p.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />
-                    ) : (
-                      <span style={{color: '#a1a1aa', fontSize: '12px'}}>No Image</span>
-                    )}
-                  </td>
-                  <td>{p.name}</td>
-                  <td>
-                    <span style={{ padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', backgroundColor: p.category === 'cewek' ? '#fce7f3' : '#e0f2fe', color: p.category === 'cewek' ? '#db2777' : '#0284c7' }}>
-                      {p.category === 'cewek' ? 'Cewek' : 'Cowok'}
-                    </span>
-                  </td>
-                  <td>Rp {Number(p.price).toLocaleString('id-ID')}</td>
-                  <td>
-                    <button onClick={() => handleEdit(p)} className="btn-edit" style={{marginRight: '8px'}}>Edit</button>
-                    <button onClick={() => handleDelete(p.id)} className="btn-delete">Hapus</button>
-                  </td>
+          
+          {/* BUNGKUSAN RESPONSIVE UNTUK HP */}
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%', paddingBottom: '10px' }}>
+            <table className="crud-table" style={{ minWidth: '600px', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th>Gambar</th>
+                  <th>Nama Produk</th>
+                  <th>Kategori</th>
+                  <th>Harga</th>
+                  <th>Aksi</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {products.map(p => (
+                  <tr key={p.id}>
+                    <td>
+                      {p.image ? (
+                        <img src={`https://rc-thrift-backend-production.up.railway.app/storage/${p.image}`} alt={p.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} />
+                      ) : (
+                        <span style={{color: '#a1a1aa', fontSize: '12px'}}>No Image</span>
+                      )}
+                    </td>
+                    <td style={{ whiteSpace: 'nowrap' }}>{p.name}</td>
+                    <td>
+                      <span style={{ padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold', backgroundColor: p.category === 'cewek' ? '#fce7f3' : '#e0f2fe', color: p.category === 'cewek' ? '#db2777' : '#0284c7' }}>
+                        {p.category === 'cewek' ? 'Cewek' : 'Cowok'}
+                      </span>
+                    </td>
+                    <td style={{ whiteSpace: 'nowrap', fontWeight: 'bold' }}>Rp {Number(p.price).toLocaleString('id-ID')}</td>
+                    <td>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button onClick={() => handleEdit(p)} className="btn-edit">Edit</button>
+                        <button onClick={() => handleDelete(p.id)} className="btn-delete">Hapus</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </div>

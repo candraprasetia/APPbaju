@@ -16,24 +16,45 @@ export default function Home() {
   }, []);
 
   const handleBeliWhatsApp = (namaBarang) => {
-    const noWA = "6281234567890"; // Ganti pakai nomer kamu atau Rika
+    const noWA = "6281234567890"; // Ganti pakai nomer kamu/Rika
     const pesan = `Halo Kak, saya tertarik mau beli ${namaBarang}. Apakah barangnya masih ready?`;
     window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`, '_blank');
   };
 
+  // KARTU PRODUK YANG SUDAH DIPERBAIKI (TIDAK PANJANG LAGI)
   const ProductCard = ({ product, index }) => (
-    <motion.div className="mp-card" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -8, scale: 1.02 }} style={{ display: 'flex', flexDirection: 'column' }}>
+    <motion.div 
+      className="mp-card" 
+      initial={{ opacity: 0, y: 20 }} 
+      whileInView={{ opacity: 1, y: 0 }} 
+      viewport={{ once: true }} 
+      transition={{ delay: index * 0.1 }} 
+      whileHover={{ y: -8, scale: 1.02 }} 
+      style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#fff', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}
+    >
       <div 
         className="card-img-placeholder" 
-        style={{ backgroundImage: product.image ? `url(https://rc-thrift-backend-production.up.railway.app/storage/${product.image})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', height: '200px' }}>
+        style={{ 
+          backgroundImage: product.image ? `url(https://rc-thrift-backend-production.up.railway.app/storage/${product.image})` : 'none', 
+          backgroundSize: 'cover', 
+          backgroundPosition: 'center', 
+          width: '100%',
+          aspectRatio: '1 / 1', // INI KUNCI AGAR FOTO KOTAK SEMPURNA
+          backgroundColor: '#f3f4f6'
+        }}>
       </div>
-      <div className="card-body" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', padding: '15px' }}>
-        <h4 className="product-name">{product.name}</h4>
-        <div className="product-price" style={{ marginBottom: '15px', fontWeight: 'bold' }}>
+      <div className="card-body" style={{ display: 'flex', flexDirection: 'column', padding: '12px', gap: '8px' }}>
+        <h4 className="product-name" style={{ margin: 0, fontSize: '14px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#18181b' }}>
+          {product.name}
+        </h4>
+        <div className="product-price" style={{ fontWeight: 'bold', fontSize: '14px', color: '#18181b' }}>
           Rp {Number(product.price).toLocaleString('id-ID')}
         </div>
-        <button onClick={() => handleBeliWhatsApp(product.name)} style={{ marginTop: 'auto', background: '#25D366', color: 'white', padding: '10px', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
-          <MessageCircle size={18} /> Pesan via WA
+        <button 
+          onClick={() => handleBeliWhatsApp(product.name)} 
+          style={{ background: '#25D366', color: 'white', padding: '8px', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px', fontWeight: 'bold', fontSize: '12px' }}
+        >
+          <MessageCircle size={14} /> Pesan
         </button>
       </div>
     </motion.div>
@@ -56,14 +77,14 @@ export default function Home() {
       </header>
 
       <main className="mp-container">
-        {/* BANNER DIPERBESAR TINGGINYA JADI 400px (atau lebih sesuai selera) */}
+        {/* BANNER 1920x600 TERKUNCI (Ganti URL-nya dengan gambar kamu) */}
         <section 
           className="mp-banner" 
           style={{ 
             width: '100%',
             aspectRatio: '1920 / 600',
             display: 'flex',
-            backgroundImage: 'url("/banner.png")',
+            backgroundImage: 'url("/banner.jpg")', // Sesuaikan path ini
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
@@ -72,8 +93,6 @@ export default function Home() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="banner-content" style={{ width: '100%', height: '100%' }}></motion.div>
         </section>
 
-
-        {/* JARAK BAWAH KATEGORI DIPERKECIL */}
         <section className="mp-categories" style={{ marginBottom: '10px' }}>
           <div className="category-grid">
             <Link to="/kategori/cowok" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -92,9 +111,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* JARAK ATAS PRODUK DIRAPATKAN (paddingTop jadi 10px) */}
         <section className="mp-products" style={{ paddingTop: '10px', paddingBottom: '60px' }}>
           <div className="section-header"><h3>LATEST DROPS</h3></div>
+          
+          {/* GRID PRODUK */}
           <div className="product-grid">
             {products.length === 0 ? (
               <p style={{ gridColumn: '1 / -1', textAlign: 'center', marginTop: '20px' }}>Belum ada produk jualan.</p>
