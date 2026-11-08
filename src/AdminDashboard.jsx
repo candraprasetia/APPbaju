@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
-  const [form, setForm] = useState({ name: '', price: '' });
+  const [form, setForm] = useState({ name: '', price: '', category: 'cowok' }); 
   const [image, setImage] = useState(null);
   
   const [editingId, setEditingId] = useState(null);
@@ -26,6 +26,7 @@ export default function AdminDashboard() {
     const formData = new FormData();
     formData.append('name', form.name);
     formData.append('price', form.price);
+    formData.append('category', form.category);
     if (image) {
       formData.append('image', image);
     }
@@ -86,6 +87,11 @@ export default function AdminDashboard() {
           <form onSubmit={handleSubmit} className="crud-form">
             <input type="text" placeholder="Nama Baju (misal: Vintage Crewneck)" value={form.name} onChange={e => setForm({...form, name: e.target.value})} required />
             <input type="number" placeholder="Harga (misal: 85000)" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required />
+
+            <select value={form.category} onChange={e => setForm({...form, category: e.target.value})} required style={{ display: 'block', width: '100%', padding: '10px', marginBottom: '15px' }}>
+              <option value="cowok">Koleksi Cowok</option>
+              <option value="cewek">Koleksi Cewek</option>
+            </select>
             
             <label style={{display: 'block', marginBottom: '5px', fontSize: '13px', color: '#71717a'}}>
               {editingId ? "Upload foto baru (Opsional, biarkan kosong jika tidak ingin ganti foto)" : "Upload foto barang"}
