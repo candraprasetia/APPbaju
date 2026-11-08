@@ -63,7 +63,7 @@ export default function Home() {
             width: '100%',
             aspectRatio: '1920 / 600',
             display: 'flex',
-            backgroundImage: 'url("MASUKKAN_LINK_URL_GAMBAR_BANNER_KAMU_DISINI")',
+            backgroundImage: 'url("/banner.png")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
