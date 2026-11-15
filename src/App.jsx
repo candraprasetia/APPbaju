@@ -3,6 +3,7 @@ import Home from './home';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 import CategoryPage from './CategoryPage';
+import ProductCard from '../components/ProductCard';
 import './App.css';
 
 function App() {
