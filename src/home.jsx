@@ -3,7 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Search, ShoppingBag, User, Shirt, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import ProductCard from '../components/ProductCard'; // Ubah ke './components/ProductCard' jika Home.jsx ada langsung di src/
+import ProductCard from './components/ProductCard';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -11,7 +11,6 @@ export default function Home() {
   useEffect(() => {
     axios.get('https://rc-thrift-backend-production.up.railway.app/api/products')
       .then(res => {
-        // Jika backend Laravel sudah memakai ->latest()->get(), langsung setProducts(res.data)
         setProducts(res.data);
       })
       .catch(err => console.error("Error fetching data:", err));
@@ -90,7 +89,7 @@ export default function Home() {
                   key={p.id}
                   product={p}
                   index={i}
-                  onOrderWA={handleBeliWhatsApp}
+                  onBuy={handleBeliWhatsApp}
                 />
               ))
             )}
